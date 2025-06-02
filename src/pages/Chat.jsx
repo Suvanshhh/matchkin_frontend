@@ -1,37 +1,49 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
+import { io } from "socket.io-client";
 
 const Chat = ({ token }) => {
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const ws = useRef(null);
+  const [input, setInput] = useState("");
+  const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
-  const room = 'general';
+  const room = "general";
 
   useEffect(() => {
-    const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const wsUrl = `${wsProtocol}://${window.location.host}/ws/chat/${room}?token=${token}`;
-    ws.current = new WebSocket(wsUrl);
+    const backendHost = import.meta.env.VITE_WS_URL || "localhost:8000";
+    const socket = io(`ws://${backendHost}`, {
+      query: { token, room }
+    });
+    socketRef.current = socket;
 
-    ws.current.onmessage = (e) => {
-      try {
-        const msg = JSON.parse(e.data);
-        setMessages((prev) => [...prev, msg]);
-      } catch {
-        setMessages((prev) => [...prev, { content: e.data }]);
-      }
+    socket.on("connect", () => {
+      // Connected!
+    });
+
+    socket.on("chat_history", (msgs) => {
+      setMessages(msgs);
+    });
+
+    socket.on("chat_message", (msg) => {
+      setMessages((prev) => [...prev, msg]);
+    });
+
+    socket.on("disconnect", () => {
+      // Disconnected!
+    });
+
+    return () => {
+      socket.disconnect();
     };
-
-    return () => ws.current?.close();
   }, [token, room]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const sendMessage = () => {
-    if (input.trim() && ws.current?.readyState === WebSocket.OPEN) {
-      ws.current.send(input.trim());
-      setInput('');
+    if (input.trim() && socketRef.current?.connected) {
+      socketRef.current.emit("chat_message", input.trim());
+      setInput("");
     }
   };
 
@@ -41,7 +53,7 @@ const Chat = ({ token }) => {
       <div className="messages">
         {messages.map((msg, i) => (
           <div key={i}>
-            <span className="sender">{msg.sender || 'Anonymous'}: </span>
+            <span className="sender">{msg.sender || "Anonymous"}: </span>
             <span>{msg.content || msg}</span>
           </div>
         ))}
@@ -50,8 +62,8 @@ const Chat = ({ token }) => {
       <input
         type="text"
         value={input}
-        onChange={e => setInput(e.target.value)}
-        onKeyPress={e => e.key === 'Enter' && sendMessage()}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyPress={(e) => e.key === "Enter" && sendMessage()}
         placeholder="Type your message..."
       />
       <button onClick={sendMessage}>Send</button>
