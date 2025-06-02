@@ -1,0 +1,28 @@
+/* src/pages/Chat.css */
+.messages {
+  flex: 1;
+  min-height: 200px;
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1.5px solid #b2c7e1;
+  padding: 12px;
+  margin: 14px 0;
+  background: #f5f7fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(74,144,226,0.04);
+}
+.messages > div {
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: #e7f0fd;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+.sender {
+  color: #4a90e2;
+  font-weight: 600;
+  margin-right: 8px;
+}
