@@ -13,12 +13,14 @@ const Login = ({ setToken }) => {
     setLoading(true);
     setError("");
     try {
-      // Frontend code should look like this:
-      fetch(`${import.meta.env.VITE_API_URL}/api/auth/send-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: "test@example.com" }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/send-otp`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }
+      );
 
       if (res.ok) {
         setStep(2);
@@ -36,11 +38,14 @@ const Login = ({ setToken }) => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/auth/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/verify-otp`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, otp }),
+        }
+      );
       const data = await res.json();
       if (res.ok && data.token) {
         localStorage.setItem("token", data.token);

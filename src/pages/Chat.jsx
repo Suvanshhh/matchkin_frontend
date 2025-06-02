@@ -9,14 +9,18 @@ const Chat = ({ token }) => {
   const room = "general";
 
   useEffect(() => {
+    // Use wss:// in production, ws:// in development
+    const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
     const backendHost = import.meta.env.VITE_WS_URL || "localhost:8000";
-    const socket = io(`ws://${backendHost}`, {
-      query: { token, room }
+    const socket = io(`${wsProtocol}://${backendHost}`, {
+      query: { token, room },
+      transports: ["websocket"], // Force websocket transport for reliability
+      secure: wsProtocol === "wss",
     });
     socketRef.current = socket;
 
     socket.on("connect", () => {
-      // Connected!
+      // Optionally notify connection
     });
 
     socket.on("chat_history", (msgs) => {
@@ -28,7 +32,7 @@ const Chat = ({ token }) => {
     });
 
     socket.on("disconnect", () => {
-      // Disconnected!
+      // Optionally notify disconnection
     });
 
     return () => {
@@ -63,7 +67,7 @@ const Chat = ({ token }) => {
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+        onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         placeholder="Type your message..."
       />
       <button onClick={sendMessage}>Send</button>
