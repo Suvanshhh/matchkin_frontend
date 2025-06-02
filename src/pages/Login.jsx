@@ -13,7 +13,7 @@ const Login = ({ setToken }) => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:8000/api/auth/send-otp', {
+      const res = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -34,7 +34,7 @@ const Login = ({ setToken }) => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:8000/api/auth/verify-otp', {
+      const res = await fetch('/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp }),
@@ -54,7 +54,7 @@ const Login = ({ setToken }) => {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '100px auto', padding: 20, backgroundColor: 'white', borderRadius: 8, boxShadow: '0 0 8px rgba(0,0,0,0.1)' }}>
+    <div className="container">
       {step === 1 ? (
         <>
           <h2>Enter your Email</h2>

@@ -1,64 +1,60 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Chat = ({ token }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const ws = useRef(null);
+  const messagesEndRef = useRef(null);
+  const room = 'general';
 
   useEffect(() => {
-    ws.current = new WebSocket(`ws://localhost:8000/ws/chat?token=${token}`);
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const wsUrl = `${wsProtocol}://${window.location.host}/ws/chat/${room}?token=${token}`;
+    ws.current = new WebSocket(wsUrl);
 
-    ws.current.onopen = () => {
-      console.log('WebSocket connected');
+    ws.current.onmessage = (e) => {
+      try {
+        const msg = JSON.parse(e.data);
+        setMessages((prev) => [...prev, msg]);
+      } catch {
+        setMessages((prev) => [...prev, { content: e.data }]);
+      }
     };
 
-    ws.current.onmessage = e => {
-      setMessages(prev => [...prev, e.data]);
-    };
+    return () => ws.current?.close();
+  }, [token, room]);
 
-    ws.current.onerror = e => {
-      console.error('WebSocket error:', e);
-    };
-
-    ws.current.onclose = () => {
-      console.log('WebSocket disconnected');
-    };
-
-    return () => {
-      ws.current.close();
-    };
-  }, [token]);
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const sendMessage = () => {
-    if (ws.current && input.trim()) {
+    if (input.trim() && ws.current?.readyState === WebSocket.OPEN) {
       ws.current.send(input.trim());
       setInput('');
     }
   };
 
-  const handleKeyPress = e => {
-    if (e.key === 'Enter') sendMessage();
-  };
-
   return (
-    <div style={{ maxWidth: 600, margin: '50px auto', padding: 20, backgroundColor: 'white', borderRadius: 8, boxShadow: '0 0 8px rgba(0,0,0,0.1)' }}>
+    <div className="container">
       <h2>Matchkin Chat</h2>
-      <div style={{ height: 300, overflowY: 'auto', border: '1px solid #ddd', padding: 10, marginBottom: 10 }}>
+      <div className="messages">
         {messages.map((msg, i) => (
-          <div key={i} style={{ marginBottom: 8 }}>{msg}</div>
+          <div key={i}>
+            <span className="sender">{msg.sender || 'Anonymous'}: </span>
+            <span>{msg.content || msg}</span>
+          </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
       <input
         type="text"
         value={input}
         onChange={e => setInput(e.target.value)}
-        onKeyPress={handleKeyPress}
+        onKeyPress={e => e.key === 'Enter' && sendMessage()}
         placeholder="Type your message..."
-        style={{ width: '80%', padding: 10 }}
       />
-      <button onClick={sendMessage} style={{ width: '18%', marginLeft: '2%' }}>
-        Send
-      </button>
+      <button onClick={sendMessage}>Send</button>
     </div>
   );
 };
