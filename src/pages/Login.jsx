@@ -13,11 +13,13 @@ const Login = ({ setToken }) => {
     setLoading(true);
     setError("");
     try {
+      // Frontend code should look like this:
       fetch(`${import.meta.env.VITE_API_URL}/api/auth/send-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: "test@example.com" }),
       });
+
       if (res.ok) {
         setStep(2);
       } else {
