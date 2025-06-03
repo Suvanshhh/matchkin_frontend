@@ -1,6 +1,13 @@
 import React, { useRef, useEffect } from "react";
 
-const ChatArea = ({ messages, onSend, input, setInput, userEmail }) => {
+const ChatArea = ({
+  messages,
+  onSend,
+  input,
+  setInput,
+  userEmail,
+  onResetChat // Accept the reset handler as a prop
+}) => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -42,6 +49,13 @@ const ChatArea = ({ messages, onSend, input, setInput, userEmail }) => {
           placeholder="Type a message..."
         />
         <button type="submit">Send</button>
+        <button
+          className="reset-chat-btn"
+          type="button"
+          onClick={onResetChat} 
+        >
+          Reset Chat
+        </button>
       </form>
     </main>
   );

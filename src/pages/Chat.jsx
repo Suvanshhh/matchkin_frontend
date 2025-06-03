@@ -122,10 +122,14 @@ const Chat = ({ token, onLogout }) => {
 
   const handleSend = () => {
     if (input.trim() && socketRef.current?.connected) {
-      // Send message to server; do NOT update local state directly!
       socketRef.current.emit("chat_message", input.trim());
       setInput("");
     }
+  };
+
+  // Reset Chat Handler
+  const handleResetChat = () => {
+    setMessages([]);
   };
 
   return (
@@ -137,6 +141,7 @@ const Chat = ({ token, onLogout }) => {
         input={input}
         setInput={setInput}
         userEmail={userEmail}
+        onResetChat={handleResetChat} 
       />
     </div>
   );
