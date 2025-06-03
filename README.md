@@ -1,84 +1,124 @@
 
+### ✅ New `README.md` for `matchkin-chat-frontend`
 
-# 🟦 Frontend README (`frontend/README.md`)
+````markdown
+# 💬 Matchkin Chat – Frontend
 
-```markdown
-# Matchkin Chat – Frontend
-
-A modern, real-time chat application frontend built with **React (Vite)**, styled to match Matchkin’s branding.  
-Connects to a Node.js + Socket.IO backend for authentication and messaging.
+A sleek, real-time chat application frontend built using **React (Vite)**, designed with modern UI principles (glassmorphism, responsiveness) and integrated with secure OTP-based authentication. Built for Matchkin's Internship Challenge.
 
 ---
 
-## 🚀 Features
+## ✨ Features
 
-- OTP-based login (secure, passwordless)
-- Protected chat interface (JWT auth)
-- Real-time messaging (Socket.IO)
-- Responsive, glassmorphism UI
-- Modern React with hooks and functional components
+- 🔐 **OTP-based Email Login**  
+  Passwordless authentication with secure token handling.
+
+- 💬 **Real-Time Messaging**  
+  Powered by **Socket.IO**, supports group and private chats.
+
+- 🔄 **JWT-Based Session Handling**  
+  Secure API communication using JSON Web Tokens.
+
+- 📱 **Responsive UI**  
+  Works across all screen sizes with mobile-first design.
+
+- 🌟 **Glassmorphism UI**  
+  Styled with modern CSS for a premium user experience.
 
 ---
 
-## 🛠️ Tech Stack
+## ⚙️ Tech Stack
 
-- [React](https://react.dev/) (with Vite)
-- [Socket.IO Client](https://socket.io/)
-- [React Router](https://reactrouter.com/)
-- CSS (custom, modern, glassy style)
+| Layer     | Tech                |
+|-----------|---------------------|
+| Framework | React (Vite) |
+| Styling   | Vanilla CSS (Glass UI) |
+| Routing   | React Router |
+| Real-time | Socket.IO Client| 
+| Auth      | JWT + OTP-based via backend |
 
 ---
 
-## 🔧 Setup & Run Locally
+## 🚀 Getting Started (Local Setup)
 
-1. **Clone the repo:**
-   ```
-   git clone https://github.com/yourusername/matchkin-chat-frontend.git
-   cd matchkin-chat-frontend
-   ```
+1. **Clone the Repository**
 
-2. **Install dependencies:**
-   ```
-   npm install
-   ```
+```bash
+git clone https://github.com/Suvanshhh/matchkin_frontend.git
+cd matchkin-chat-frontend
+````
 
-3. **Create a `.env` file:**
-   ```
-   VITE_API_URL=https://your-backend-url.com
-   VITE_WS_URL=your-backend-url.com
-   ```
+2. **Install Dependencies**
 
-4. **Start the dev server:**
-   ```
-   npm run dev
-   ```
+```bash
+npm install
+```
 
-5. **Build for production:**
-   ```
-   npm run build
-   ```
+3. **Create Environment Variables**
+
+Create a `.env` file in the root with:
+
+```env
+VITE_API_URL=https://backendmatchkin-production.up.railway.app
+VITE_WS_URL=backendmatchkin-production.up.railway.app
+```
+
+4. **Start Development Server**
+
+```bash
+npm run dev
+```
+
+5. **Build for Production**
+
+```bash
+npm run build
+```
 
 ---
 
 ## 🌐 Live Demo
 
-[Live App](https://your-frontend-url.vercel.app)
+🔗 [View Deployed App](https://matchkin-frontend.vercel.app/)
 
 ---
 
-## 📸 Screenshots
-
-![Login Page](./screenshots/login.png)
-![Chat Page](./screenshots/chat.png)
-
----
-
-## 📁 Folder Structure
+## 📁 Project Structure
 
 ```
 src/
-  components/    # Reusable UI components
-  pages/         # Login, Chat, NotFound pages
-  App.js         # Main router and app logic
-  style.css      # Main styles
+├── components/      # UI components (InputBox, ChatCard, etc.)
+├── pages/           # Login, Chat, NotFound
+├── index.js
+├── index.css
+├── App.jsx          # Routing logic
+├── style.css        # Global styles (Glassmorphism)
+└── main.jsx         # Entry point
 ```
+
+---
+
+
+## Working Demo (Screenshots)
+<img src="https://github.com/user-attachments/assets/459d5eb1-4a74-4f25-8c21-749623c71b4d" width="500"/>
+<img src="https://github.com/user-attachments/assets/74419d8b-ecd9-4d99-b224-f4456b4facda" width="500"/>
+<img src="https://github.com/user-attachments/assets/b94f4e55-afc7-4bb4-b485-09c9c900fec0" width="500"/>
+
+---
+
+## Working Demo (Video)
+🔗 [View Working Video](https://drive.google.com/drive/folders/1oCPkmXL5lwhYuVpyBrEK72YShq9Hw_Xz)
+
+## 🧪 Testing Guide
+
+* ✅ **Login Flow**
+  Enter a valid email > check console OTP > login > token stored in localStorage.
+
+* ✅ **Messaging Flow**
+  Type & send messages in a group/private chat. Real-time updates confirmed.
+
+* ✅ **Auth Check**
+  Navigate to `/chat` without token → auto-redirects to `/login`.
+
+---
+
