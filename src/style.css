@@ -253,7 +253,7 @@ p[style*="color: red"] {
   background: rgba(94,96,206,0.13);
 }
 .chat-username { font-weight: 600; }
-.chat-last { font-size: 0.95em; color: #888; }
+.chat-last { font-size: 0.95em; color: #c0d6f1; }
 
 .chat-area {
   flex: 1;
